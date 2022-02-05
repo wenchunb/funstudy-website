@@ -32,11 +32,15 @@ export const LoginWrapper = styled.div`
     justify-content: space-around;
     align-items: center;
     .left {
-        max-width: 300px;
+        max-width: 400px;
         color: #fff;
         line-height: 50px;
         text-align: center;
         display: ${props => props.leftIsShow};
+        span {
+          font-size:40px;
+          font-weight: bold;
+        }
     }
     .right {
         width:500px;

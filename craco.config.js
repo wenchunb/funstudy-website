@@ -22,6 +22,7 @@ module.exports = {
       "@": resovle("src"),
       "components": resovle("src/components"),
     },
+    
   },
 };
 

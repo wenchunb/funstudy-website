@@ -1,4 +1,5 @@
-import React, { memo, useEffect, useRef, useState } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Form, Input, Button } from "antd";
 import {
   UserOutlined,
@@ -7,25 +8,51 @@ import {
   RightCircleOutlined,
 } from "@ant-design/icons";
 import { LoAndReWrapper } from "./style";
-export const LoAndRe = memo(({changeTrigger}) => {
+export const LoAndRe = memo(({ changeTrigger }) => {
   const [loOrRe, setLoOrRe] = useState(0);
   const [title, setTitle] = useState(0);
   const [tips, setTips] = useState(0);
   const [schoolInp, setSchoolInp] = useState("");
   const [btnMsg, setBtnMsg] = useState("注册");
-  const formRef = useRef()
-  useEffect(() => {
-    const changeState = () => {
-      loOrRe === 0 ? setLoOrRe(1) : setLoOrRe(0);
+  const initRule = useMemo((props) => {
+    return [
+      {
+        required: true,
+        message: "请输入密码",
+      },
+      {
+        max: 50,
+        message: "最长20位",
+      },
+      {
+        min: 6,
+        message: "最短6位",
+      },
+      {
+        pattern: /^[A-Za-z\d_]+$/,
+        message: "只能包含字母数字下划线",
+      },
+    ]
+  },[]);
+  const [passWordRule, setpassWordRules] = useState(initRule);
+  const formRef = useRef();
+  const navigate = useNavigate()
+  const changeState = useCallback(() => {
+    loOrRe === 0 ? setLoOrRe(1) : setLoOrRe(0);
       changeTrigger()
       formRef.current.resetFields();
-    };
+  },[loOrRe,changeTrigger])
+  
+  const toHome = useCallback(() => {
+    navigate('/home',{replace:true});
+  },[navigate])
+  useEffect(() => {
     if (!loOrRe) {
       setTitle(<div className="title">注册你的即时账户</div>);
       setTips(
         <div className="tips">
           已有账户？
-          <button onClick = {changeState}>
+          <button onClick={changeState}>
             前去登录
             <RightCircleOutlined />
           </button>
@@ -33,12 +60,13 @@ export const LoAndRe = memo(({changeTrigger}) => {
       );
       setSchoolInp("1");
       setBtnMsg("注册");
+      setpassWordRules(initRule);
     } else {
       setTitle(<div className="title">登录你的即时账户</div>);
       setTips(
         <div className="tips">
           没有账户？
-          <button onClick = {changeState}>
+          <button onClick={changeState}>
             免费注册
             <RightCircleOutlined />
           </button>
@@ -46,9 +74,14 @@ export const LoAndRe = memo(({changeTrigger}) => {
       );
       setSchoolInp("0");
       setBtnMsg("登录");
+      setpassWordRules([
+        {
+          required: true,
+          message: "请输入密码",
+        },
+      ]);
     }
-  }, [loOrRe,changeTrigger]);
-
+  }, [loOrRe, initRule,changeState]);
   const onFinish = (values) => {
     console.log("Received values of form: ", values);
   };
@@ -59,7 +92,7 @@ export const LoAndRe = memo(({changeTrigger}) => {
       <Form
         name="login"
         className="login-form"
-        ref = {formRef}
+        ref={formRef}
         initialValues={{
           remember: true,
         }}
@@ -80,15 +113,7 @@ export const LoAndRe = memo(({changeTrigger}) => {
             size="large"
           />
         </Form.Item>
-        <Form.Item
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: "请输入密码",
-            },
-          ]}
-        >
+        <Form.Item name="password" rules={passWordRule}>
           <Input
             prefix={<LockOutlined className="site-form-item-icon" />}
             type="password"
@@ -118,7 +143,7 @@ export const LoAndRe = memo(({changeTrigger}) => {
             type="primary"
             htmlType="submit"
             className="login-form-button"
-            
+            onClick = {toHome}
           >
             {btnMsg}
           </Button>
