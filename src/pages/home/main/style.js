@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { PRIMARYCOLOR } from "../../common/commonCss";
+import { PRIMARYCOLOR } from "@/common/commonCss";
 export const UserINfoWrapper = styled.div`
   height: 150px;
   background: linear-gradient(to right, ${PRIMARYCOLOR}, skyblue);

@@ -9,9 +9,7 @@ export const NavigationBarWapper = styled.div`
   background-color: #fff;
   display: flex;
   justify-content: space-between;
-  position: ${(props) => props.isFiexd};
-  top:0;
-  z-index: 999;
+  box-shadow:0 1px 1px #ccc;
   .logo {
     width: 150px;
     display: flex;

@@ -1,4 +1,5 @@
 import React, { memo,useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "antd";
 import { VerifiedOutlined } from "@ant-design/icons";
 
@@ -6,9 +7,14 @@ import { UserINfoWrapper, ClassContentWrapper } from "./style";
 import MainModal from '@/components/main-modal';
 import profile from "@/assets/images/test-profile.jpg";
 import testClass from "@/assets/images/test-class.jpg";
+
 export default memo(function Main() {
   const [visible, setVisible] = useState(false);
   const [checkedOrAdd,setCheckedOrAdd] = useState('')
+  const navigate = useNavigate()
+  const toDetail = () => {
+    navigate('course-detail/1',{replace:false})
+  }
   const showModal = useCallback((isShow = true ,ckOrAd) => {
     if(isShow) {
       setVisible(true);
@@ -47,7 +53,7 @@ export default memo(function Main() {
           <Button className="addClass" onClick={()=> {showModal(true,'add')}}>创建课程</Button>
         </div>
 
-        <div className="container">
+        <div className="container" onClick={toDetail}>
           <ul>
             <li>
               <img src={testClass} alt="" />

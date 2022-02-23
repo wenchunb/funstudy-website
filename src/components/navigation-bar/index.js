@@ -18,7 +18,7 @@ export default memo(function NavigationBar(props) {
     </PopoverContentWapper>
   );
   return (
-    <NavigationBarWapper isFiexd={props.isFixed}>
+    <NavigationBarWapper >
       <Link to='/home' className="logo">
         <img src={logoImg} alt="" />
         <h1>乐学吧</h1>
